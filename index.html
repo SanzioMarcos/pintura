@@ -190,22 +190,32 @@
             feedback.style.display = 'none';
 
             // Envia a requisição POST para o Apps Script
-            fetch(scriptURL, { method: 'POST', body: new FormData(form) })
-                .then(response => {
-                    // ALTERAÇÃO AQUI: Mensagem clara direcionada ao seu cliente
+            // fetch(scriptURL, { method: 'POST', body: new FormData(form) })
+            fetch(scriptURL, {
+                method: 'POST',
+                body: new FormData(form),
+                mode: 'no-cors'
+            })
+                // .then(response => {
+                //     // ALTERAÇÃO AQUI: Mensagem clara direcionada ao seu cliente
+                //     feedback.innerText = '✓ Mensagem enviada com sucesso! Obrigado pelo contato.';
+                //     feedback.classList.add('success');
+                //     form.reset(); // Limpa os campos do formulário para deixá-lo pronto
+                    
+                //     // Opcional: Remove o aviso de sucesso após 5 segundos para limpar a tela
+                //     setTimeout(() => {
+                //         feedback.style.opacity = '0';
+                //         setTimeout(() => {
+                //             feedback.className = 'message';
+                //             feedback.style.display = 'none';
+                //         }, 300); // tempo da transição do CSS
+                //     }, 5000);
+                // })
+                .then(() => {
                     feedback.innerText = '✓ Mensagem enviada com sucesso! Obrigado pelo contato.';
                     feedback.classList.add('success');
-                    form.reset(); // Limpa os campos do formulário para deixá-lo pronto
-                    
-                    // Opcional: Remove o aviso de sucesso após 5 segundos para limpar a tela
-                    setTimeout(() => {
-                        feedback.style.opacity = '0';
-                        setTimeout(() => {
-                            feedback.className = 'message';
-                            feedback.style.display = 'none';
-                        }, 300); // tempo da transição do CSS
-                    }, 5000);
-                })
+                    form.reset();
+                })                
                 .catch(error => {
                     console.error('Erro ao enviar:', error.message);
                     feedback.innerText = '✕ Houve um erro ao enviar os dados. Tente novamente.';
