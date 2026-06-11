@@ -214,14 +214,17 @@
                 //     }, 5000);
                 // })
                 .then(() => {
-                    alert('SUCESSO');
-
                     feedback.style.display = 'block';
                     feedback.innerHTML = '✓ Mensagem enviada com sucesso!';
                     feedback.className = 'message success';
 
                     form.reset();
-                })           
+
+                    setTimeout(() => {
+                        feedback.className = 'message';
+                        feedback.style.display = 'none';
+                    }, 5000); // 5 segundos
+                })        
                 .catch(error => {
                     feedback.style.display = 'block';
                     feedback.innerHTML = '✕ Erro ao enviar.';
