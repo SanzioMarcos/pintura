@@ -177,8 +177,10 @@
         const form = document.getElementById('meuFormulario');
         const btnEnviar = document.getElementById('btnEnviar');
         const feedback = document.getElementById('feedback');
+        console.log(feedback);
 
         form.addEventListener('submit', e => {
+            console.log('Submit disparado');
             e.preventDefault(); // Impede o recarregamento da página
             
             // Desativa o botão e muda o texto para indicar progresso
@@ -212,14 +214,20 @@
                 //     }, 5000);
                 // })
                 .then(() => {
-                    feedback.innerText = '✓ Mensagem enviada com sucesso! Obrigado pelo contato.';
-                    feedback.classList.add('success');
+                    alert('SUCESSO');
+
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = '✓ Mensagem enviada com sucesso!';
+                    feedback.className = 'message success';
+
                     form.reset();
-                })                
+                })           
                 .catch(error => {
-                    console.error('Erro ao enviar:', error.message);
-                    feedback.innerText = '✕ Houve um erro ao enviar os dados. Tente novamente.';
-                    feedback.classList.add('error');
+                    feedback.style.display = 'block';
+                    feedback.innerHTML = '✕ Erro ao enviar.';
+                    feedback.className = 'message error';
+
+                    console.error(error);
                 })
                 .finally(() => {
                     // Reativa o botão após o término da requisição
