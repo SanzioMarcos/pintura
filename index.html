@@ -112,17 +112,22 @@
             cursor: not-allowed;
         }
 
+        /* Ajustado para uma transição suave quando o aviso aparecer */
         .message {
             margin-top: 15px;
-            padding: 10px;
+            padding: 12px;
             border-radius: 6px;
             font-size: 14px;
             text-align: center;
+            font-weight: 500;
             display: none;
+            opacity: 0;
+            transition: opacity 0.3s ease;
         }
 
         .message.success {
             display: block;
+            opacity: 1;
             background-color: #d1fae5;
             color: #065f46;
             border: 1px solid #a7f3d0;
@@ -130,6 +135,7 @@
 
         .message.error {
             display: block;
+            opacity: 1;
             background-color: #fee2e2;
             color: #991b1b;
             border: 1px solid #fca5a5;
@@ -186,17 +192,27 @@
             // Envia a requisição POST para o Apps Script
             fetch(scriptURL, { method: 'POST', body: new FormData(form) })
                 .then(response => {
-                    feedback.innerText = 'Dados enviados com sucesso! Verifique sua planilha.';
+                    // ALTERAÇÃO AQUI: Mensagem clara direcionada ao seu cliente
+                    feedback.innerText = '✓ Mensagem enviada com sucesso! Obrigado pelo contato.';
                     feedback.classList.add('success');
-                    form.reset(); // Limpa os campos do formulário
+                    form.reset(); // Limpa os campos do formulário para deixá-lo pronto
+                    
+                    // Opcional: Remove o aviso de sucesso após 5 segundos para limpar a tela
+                    setTimeout(() => {
+                        feedback.style.opacity = '0';
+                        setTimeout(() => {
+                            feedback.className = 'message';
+                            feedback.style.display = 'none';
+                        }, 300); // tempo da transição do CSS
+                    }, 5000);
                 })
                 .catch(error => {
                     console.error('Erro ao enviar:', error.message);
-                    feedback.innerText = 'Houve um erro ao enviar os dados. Tente novamente.';
+                    feedback.innerText = '✕ Houve um erro ao enviar os dados. Tente novamente.';
                     feedback.classList.add('error');
                 })
                 .finally(() => {
-                    // Reativa o botão após o término da requisição (sucesso ou erro)
+                    // Reativa o botão após o término da requisição
                     btnEnviar.disabled = false;
                     btnEnviar.innerText = 'Enviar Mensagem';
                 });
